@@ -5,8 +5,9 @@
 ###############################################################################
 cmake_minimum_required(VERSION 3.16.0)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(libq)
 set(q_root ${CMAKE_CURRENT_SOURCE_DIR})
@@ -15,7 +16,7 @@ set(q_root ${CMAKE_CURRENT_SOURCE_DIR})
 # Get rid of these warnings
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
       OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}-Wno-missing-braces]")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-braces")
 endif()
 
 ###############################################################################
