@@ -15,6 +15,7 @@
 #include <expected>
 #include <ranges>
 #include <algorithm>
+#include <memory>
 
 namespace cycfi::q
 {
@@ -113,18 +114,18 @@ namespace cycfi::q
    ////////////////////////////////////////////////////////////////////////////
    // Factory helpers
    ////////////////////////////////////////////////////////////////////////////
-   inline std::expected<wav_reader, const char*> make_wav_reader(std::string const& filename)
+   inline std::expected<std::unique_ptr<wav_reader>, const char*> make_wav_reader(std::string const& filename)
    {
-      wav_reader reader{filename};
-      if (!reader)
+      auto reader = std::make_unique<wav_reader>(filename);
+      if (!*reader)
          return std::unexpected("failed to open wav");
       return reader;
    }
 
-   inline std::expected<wav_reader, const char*> make_wav_reader(char const* filename)
+   inline std::expected<std::unique_ptr<wav_reader>, const char*> make_wav_reader(char const* filename)
    {
-      wav_reader reader{filename};
-      if (!reader)
+      auto reader = std::make_unique<wav_reader>(filename);
+      if (!*reader)
          return std::unexpected("failed to open wav");
       return reader;
    }
