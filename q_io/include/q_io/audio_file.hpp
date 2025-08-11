@@ -12,6 +12,9 @@
 #include <string>
 #include <vector>
 #include <q/support/basic_concepts.hpp>
+#include <expected>
+#include <ranges>
+#include <algorithm>
 
 namespace cycfi::q
 {
@@ -29,8 +32,8 @@ namespace cycfi::q
 
       wav_base&      operator=(wav_base const&) = delete;
       explicit       operator bool() const;
-      float          sps() const;
-      std::size_t    num_channels() const;
+      [[nodiscard]] float          sps() const;
+      [[nodiscard]] std::size_t    num_channels() const;
 
    protected:
 
@@ -48,13 +51,13 @@ namespace cycfi::q
 
                      wav_reader(char const* filename);
 
-      std::uint64_t  length() const;
-      std::uint64_t  position();
-      bool           restart();
-      bool           seek(std::uint64_t target);
+      [[nodiscard]] std::uint64_t  length() const;
+      [[nodiscard]] std::uint64_t  position();
+      [[nodiscard]] bool           restart();
+      [[nodiscard]] bool           seek(std::uint64_t target);
 
-      std::size_t    read(float* data, std::uint32_t len);
-      std::size_t    read(concepts::IndexableContainer auto& buffer);
+      [[nodiscard]] std::size_t    read(float* data, std::uint32_t len);
+      [[nodiscard]] std::size_t    read(concepts::IndexableContainer auto& buffer);
    };
 
    ////////////////////////////////////////////////////////////////////////////
@@ -74,6 +77,11 @@ namespace cycfi::q
                      wav_memory(char const* filename, std::size_t buff_size = 1024);
 
       range const    operator()();
+
+      std::ranges::subrange<float const*> next_frame() {
+         auto r = (*this)();
+         return std::ranges::subrange<float const*>(r.begin(), r.end());
+      }
 
       std::size_t    read(float* data, std::uint32_t len) = delete;
       std::size_t    read(concepts::IndexableContainer auto& buffer) = delete;
@@ -98,9 +106,28 @@ namespace cycfi::q
                         char const* filename
                       , std::uint32_t num_channels, float sps);
 
-      std::size_t    write(float const* data, std::uint32_t len);
-      std::size_t    write(concepts::IndexableContainer auto const& buffer);
+      [[nodiscard]] std::size_t    write(float const* data, std::uint32_t len);
+      [[nodiscard]] std::size_t    write(concepts::IndexableContainer auto const& buffer);
    };
+
+   ////////////////////////////////////////////////////////////////////////////
+   // Factory helpers
+   ////////////////////////////////////////////////////////////////////////////
+   inline std::expected<wav_reader, const char*> make_wav_reader(std::string const& filename)
+   {
+      wav_reader reader{filename};
+      if (!reader)
+         return std::unexpected("failed to open wav");
+      return reader;
+   }
+
+   inline std::expected<wav_reader, const char*> make_wav_reader(char const* filename)
+   {
+      wav_reader reader{filename};
+      if (!reader)
+         return std::unexpected("failed to open wav");
+      return reader;
+   }
 
    ////////////////////////////////////////////////////////////////////////////
    // Inlines

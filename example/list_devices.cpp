@@ -5,35 +5,31 @@
 =============================================================================*/
 #include <q_io/audio_device.hpp>
 #include <q_io/midi_device.hpp>
-#include <iostream>
+#include <print>
 #include <string>
 
 namespace q = cycfi::q;
 
 int main()
 {
-   std::cout << "================================================================================" << std::endl;
-   std::cout << "Available Audio Devices: " << std::endl;
+   std::println("================================================================================");
+   std::println("Available Audio Devices: ");
    for (auto const& device : q::audio_device::list())
    {
-      std::cout
-         << "id: " << device.id() << std:: endl
-         << "name: \"" << device.name() << '"' << std:: endl
-         << "number of input channels: " << device.input_channels() << std:: endl
-         << "number of output channels: " << device.output_channels() << std:: endl
-         ;
+      std::println("id: {}", device.id());
+      std::println("name: \"{}\"", device.name());
+      std::println("number of input channels: {}", device.input_channels());
+      std::println("number of output channels: {}", device.output_channels());
    }
 
-   std::cout << "================================================================================" << std::endl;
-   std::cout << "Available MIDI Devices: " << std::endl;
+   std::println("================================================================================");
+   std::println("Available MIDI Devices: ");
    for (auto const& device : q::midi_device::list())
    {
-      std::cout
-         << "id: " << device.id() << std:: endl
-         << "name: \"" << device.name() << '"' << std:: endl
-         << "number of inputs: " << device.num_inputs() << std:: endl
-         << "number of outputs: " << device.num_outputs() << std:: endl
-         ;
+      std::println("id: {}", device.id());
+      std::println("name: \"{}\"", device.name());
+      std::println("number of inputs: {}", device.num_inputs());
+      std::println("number of outputs: {}", device.num_outputs());
    }
    return 0;
 }

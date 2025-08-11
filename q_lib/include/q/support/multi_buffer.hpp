@@ -10,6 +10,7 @@
 #include <infra/support.hpp>
 #include <infra/index_iterator.hpp>
 #include <q/support/basic_concepts.hpp>
+#include <span>
 
 namespace cycfi::q
 {
@@ -32,6 +33,12 @@ namespace cycfi::q
 
       buffer_view          operator[](std::size_t channel) const;
       std::size_t          size() const;
+
+      std::span<T>         span(std::size_t channel) const
+      {
+         T* start = _buffers[channel];
+         return std::span<T>(start, frames.size());
+      }
 
       frames_view          frames;
       channels_view        channels;
