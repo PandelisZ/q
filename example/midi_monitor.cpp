@@ -5,7 +5,7 @@
 =============================================================================*/
 #include <q_io/midi_stream.hpp>
 #include "example.hpp"
-#include <iostream>
+#include <print>
 
 namespace q = cycfi::q;
 namespace midi = q::midi_1_0;
@@ -24,69 +24,69 @@ struct midi_processor : midi::processor
 
    void operator()(midi::note_on msg, std::size_t time)
    {
-      std::cout
-         << "Note On  {"
-         << "Channel: "    << int(msg.channel())
-         << ", Key: "      << int(msg.key())
-         << ", Velocity: " << int(msg.velocity())
-         << '}'            << std::endl;
+      std::println(
+         "Note On  {{Channel: {}, Key: {}, Velocity: {}}}",
+         int(msg.channel()),
+         int(msg.key()),
+         int(msg.velocity())
+      );
    }
 
    void operator()(midi::note_off msg, std::size_t time)
    {
-      std::cout
-         << "Note Off {"
-         << "Channel: "    << int(msg.channel())
-         << ", Key: "      << int(msg.key())
-         << ", Velocity: " << int(msg.velocity())
-         << '}'            << std::endl;
+      std::println(
+         "Note Off {{Channel: {}, Key: {}, Velocity: {}}}",
+         int(msg.channel()),
+         int(msg.key()),
+         int(msg.velocity())
+      );
    }
 
    void operator()(midi::poly_aftertouch msg, std::size_t time)
    {
-      std::cout
-         << "Polyphonic Aftertouch {"
-         << "Channel: "    << int(msg.channel())
-         << ", Key: "      << int(msg.key())
-         << ", Pressure: " << int(msg.pressure())
-         << '}'            << std::endl;
+      std::println(
+         "Polyphonic Aftertouch {{Channel: {}, Key: {}, Pressure: {}}}",
+         int(msg.channel()),
+         int(msg.key()),
+         int(msg.pressure())
+      );
    }
 
    void operator()(midi::control_change msg, std::size_t time)
    {
-      std::cout
-         << "Control Change {"
-         << "Channel: "       << int(msg.channel())
-         << ", Controller: "  << int(msg.controller())
-         << ", Value: "       << int(msg.value())
-         << '}'               << std::endl;
+      std::println(
+         "Control Change {{Channel: {}, Controller: {}, Value: {}}}",
+         int(msg.channel()),
+         int(msg.controller()),
+         int(msg.value())
+      );
    }
 
    void operator()(midi::program_change msg, std::size_t time)
    {
-      std::cout
-         << "Program Change {"
-         << "Channel: "    << int(msg.channel())
-         << ", Preset: "   << int(msg.preset())
-         << '}'            << std::endl;
+      std::println(
+         "Program Change {{Channel: {}, Preset: {}}}",
+         int(msg.channel()),
+         int(msg.preset())
+      );
    }
 
    void operator()(midi::channel_aftertouch msg, std::size_t time)
    {
-      std::cout
-         << "Channel Aftertouch {"
-         << "Channel: "    << int(msg.channel())
-         << ", Pressure: " << int(msg.pressure())
-         << '}'            << std::endl;
+      std::println(
+         "Channel Aftertouch {{Channel: {}, Pressure: {}}}",
+         int(msg.channel()),
+         int(msg.pressure())
+      );
    }
 
    void operator()(midi::pitch_bend msg, std::size_t time)
    {
-      std::cout
-         << "Pitch Bend             {"
-         << "Channel: "    << int(msg.channel())
-         << ", Value: "    << int(msg.value())
-         << '}'            << std::endl;
+      std::println(
+         "Pitch Bend             {{Channel: {}, Value: {}}}",
+         int(msg.channel()),
+         int(msg.value())
+      );
    }
 };
 
