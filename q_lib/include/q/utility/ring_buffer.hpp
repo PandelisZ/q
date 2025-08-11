@@ -11,6 +11,7 @@
 #include <q/support/base.hpp>
 #include <q/detail/init_store.hpp>
 #include <q/utility/interpolation.hpp>
+#include <ranges>
 
 namespace cycfi::q
 {
@@ -35,7 +36,7 @@ namespace cycfi::q
       ring_buffer&      operator=(ring_buffer const& rhs) = default;
       ring_buffer&      operator=(ring_buffer&& rhs) = default;
 
-      std::size_t       size() const;
+      [[nodiscard]] std::size_t       size() const;
       void              push(T val);
       T const&          front() const;
       T&                front();
@@ -137,12 +138,11 @@ namespace cycfi::q
    }
 
    // Clear the ring_buffer
-   template <typename T, typename Storage>
-   inline void ring_buffer<T, Storage>::clear()
-   {
-      for (auto& e : _data)
-         e = T();
-   }
+template <typename T, typename Storage>
+inline void ring_buffer<T, Storage>::clear()
+{
+   std::ranges::fill(_data, T{});
+}
 
    // Remove the front element
    template <typename T, typename Storage>

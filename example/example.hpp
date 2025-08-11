@@ -5,7 +5,7 @@
 =============================================================================*/
 #include <q_io/midi_device.hpp>
 #include <q_io/audio_device.hpp>
-#include <iostream>
+#include <print>
 #include <csignal>
 #include <cstdlib>
 #include <cstdio>
@@ -21,9 +21,9 @@ void signal_handler(int sig)
    {
       case SIGINT:
       case SIGTERM:
-         std::cout << "================================================================================" << std::endl;
-         std::cout << "Goodbye!" << std::endl;
-         std::cout << "================================================================================" << std::endl;
+         std::println("================================================================================");
+         std::println("Goodbye!");
+         std::println("================================================================================");
          running = false;
          break;
 
@@ -37,19 +37,14 @@ int get_midi_device()
    signal(SIGINT, signal_handler);
    signal(SIGTERM, signal_handler);
 
-   std::cout << "================================================================================" << std::endl;
-   std::cout << "Available MIDI Devices (ID : \"Name\" inputs/outputs): " << std::endl;
+   std::println("================================================================================");
+   std::println("Available MIDI Devices (ID : \"Name\" inputs/outputs): ");
    for (auto const& device : q::midi_device::list())
    {
-      std::cout <<
-         device.id()
-         << " : \"" << device.name() << "\" "
-         << device.num_inputs() << '/' << device.num_outputs()
-         << std:: endl
-         ;
+      std::println("{} : \"{}\" {}/{}", device.id(), device.name(), device.num_inputs(), device.num_outputs());
    }
-   std::cout << "================================================================================" << std::endl;
-   std::cout << "Choose MIDI Device ID: ";
+   std::println("================================================================================");
+   std::print("Choose MIDI Device ID: ");
    int id;
    std::cin.clear();
    std::cin >> id;
@@ -58,19 +53,14 @@ int get_midi_device()
 
 int get_audio_device()
 {
-   std::cout << "================================================================================" << std::endl;
-   std::cout << "Available Audio Devices (ID : \"Name\" inputs/outputs): " << std::endl;
+   std::println("================================================================================");
+   std::println("Available Audio Devices (ID : \"Name\" inputs/outputs): ");
    for (auto const& device : q::audio_device::list())
    {
-      std::cout <<
-         device.id()
-         << " : \"" << device.name() << "\" "
-         << device.input_channels() << '/' << device.output_channels()
-         << std:: endl
-         ;
+      std::println("{} : \"{}\" {}/{}", device.id(), device.name(), device.input_channels(), device.output_channels());
    }
-   std::cout << "================================================================================" << std::endl;
-   std::cout << "Choose Audio Device ID: ";
+   std::println("================================================================================");
+   std::print("Choose Audio Device ID: ");
    int id;
    std::cin.clear();
    std::cin >> id;
